@@ -1,7 +1,9 @@
-# VulnDB HQ Ruby gem
+# VulnDB HQ Ruby Gem [![Build Status](https://secure.travis-ci.org/securityroots/vulndbhq.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/securityroots/vulndbhq.png?travis)][gemnasium]
 
 This gem provides a Ruby wrapper to the VulnDB HQ API (http://vulndbhq.com).
 
+[travis]: http://travis-ci.org/securityroots/vulndbhq
+[gemnasium]: https://gemnasium.com/securityroots/vulndbhq
 
 ## Installation
 
