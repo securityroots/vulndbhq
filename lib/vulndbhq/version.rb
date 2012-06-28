@@ -1,28 +1,15 @@
 module VulnDBHQ
-  class Version
-    # @return [Integer]
-    def self.major
-      0
-    end
+  class Version #:nodoc:
+    MAJOR = 0
+    MINOR = 0
+    TINY = 1
+    PRE = "beta"
 
-    # @return [Integer]
-    def self.minor
-      0
-    end
-
-    # @return [Integer]
-    def self.patch
-      1
-    end
-
-    # @return [String, NilClass]
-    def self.pre
-      'beta'
-    end
+    STRING = [MAJOR, MINOR, TINY, PRE].compact.join('.')
 
     # @return [String]
     def self.to_s
-      [major, minor, patch, pre].compact.join('.')
+      STRING
     end
   end
 end
