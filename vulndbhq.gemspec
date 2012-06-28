@@ -14,4 +14,10 @@ Gem::Specification.new do |gem|
   gem.name          = 'vulndbhq'
   gem.require_paths = ['lib']
   gem.version       = VulnDBHQ::Version
+
+  gem.add_runtime_dependency 'faraday', '~> 0.8'
+  gem.add_runtime_dependency 'multi_json', '~> 1.3'
+
+  gem.add_development_dependency 'rake', '~> 0.8'
+  gem.add_development_dependency 'rspec', '~> 2.8'
 end
