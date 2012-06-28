@@ -1,27 +1,10 @@
-require 'faraday'
-require 'vulndbhq/version'
-
 module VulnDBHQ
   # Defines constants and methods related to configuration
-  module Config
-    # The Faraday connection options if none is set
-    DEFAULT_CONNECTION_OPTIONS = {}
+  module Configurable
 
-    # The VulnDB HQ host if none is set
-    DEFAULT_HOST = ENV['VULNDBHQ_HOST']
-
-    # The VulnDB HQ user if none is set
-    DEFAULT_USER = ENV['VULNDBHQ_USER']
-
-    # The VulnDB HQ password if none is set
-    DEFAULT_PASSWORD = ENV['VULNDBHQ_PASSWORD']
-
-
-    # The value sent in the 'User-Agent' header if none is set
-    DEFAULT_USER_AGENT = "VulnDB HQ Ruby Gem #{VulnDBHQ::Version}"
 
     # An array of valid keys in the options hash when configuring a {VulnDBHQ::Client}
-    VALID_OPTIONS_KEYS = [
+    CONFIG_KEYS = [
       :connection_options,
       :host,
       :user,

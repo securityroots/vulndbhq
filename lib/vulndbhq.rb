@@ -1,6 +1,15 @@
 require 'vulndbhq/client'
-require 'vulndbhq/config'
 
 module VulnDBHQ
-  extend Config
+  class << self
+    include VulnDBHQ::Configurable
+
+    def client
+      VulnDBHQ::Client.new(options)
+    end
+
+    # Delegate to a VulnDBHQ::Client
+  end
 end
+
+VulnDBHQ.setup
