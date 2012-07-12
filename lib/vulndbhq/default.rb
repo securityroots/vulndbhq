@@ -1,24 +1,38 @@
 module VulnDBHQ
   module Default
-    # The Faraday connection options if none is set
-    CONNECTION_OPTIONS = {
-      :headers => {
-        :accept => 'application/json',
-        :user_agent => "VulnDBHQ Ruby Gem #{VulnDBHQ::Version}"
-      },
-      :open_timeout => 5,
-      :raw => true,
-      :ssl => {:verify => false},
-      :timeout => 10,
-    } unless defined? CONNECTION_OPTIONS
 
-    # The VulnDB HQ host if none is set
-    HOST = ENV['VULNDBHQ_HOST'] unless defined? HOST
+    def self.options
+      Hash[VulnDBHQ::Configurable.keys.map{|key| [key, send(key)]}]
+    end
+
+    # The Faraday connection options if none is set
+    def self.connection_options
+      @connection_options ||= {
+        :headers => {
+          :accept => 'application/vnd.vulndbhq; v=2',
+          :user_agent => "VulnDBHQ Ruby Gem #{VulnDBHQ::Version}"
+        },
+        :open_timeout => 5,
+        :raw => true,
+        :ssl => {:verify => false},
+        :timeout => 10,
+      }
+    end
+
+    # The VulnDB HQ host
+    def self.host
+      ENV['VULNDBHQ_HOST']
+    end
 
     # The VulnDB HQ user if none is set
-    USER = ENV['VULNDBHQ_USER'] unless defined? USER
+    def self.user
+      ENV['VULNDBHQ_USER']
+    end
 
     # The VulnDB HQ password if none is set
-    PASSWORD = ENV['VULNDBHQ_PASSWORD'] unless defined? PASSWORD
+    def self.password
+      ENV['VULNDBHQ_PASSWORD']
+    end
+
   end
 end
