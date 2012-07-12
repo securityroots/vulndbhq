@@ -9,27 +9,31 @@ module VulnDBHQ
   # @note All methods have been separated into modules as described in the API docs
   # @see http://support.securityroots.com
   class Client
+    include VulnDBHQ::Configurable
+
     # Initializes a new Client object
     #
     # @param options [Hash]
     # @return [VulnDBHQ::Client]
     def initialize(options={})
       VulnDBHQ::Configurable.keys.each do |key|
-        instance_variable_set("@#{key}", options[key] || VulnDBHQ::Default.const_get(key.to_s.upcase.to_sym))
+        instance_variable_set("@#{key}", options[key] || VulnDBHQ.options[key])
       end
     end
 
-    # Returns the requesting user if authentication was successful, otherwise raises {VulnDBHQ::Error::Unauthorized}
+    # Returns the collection of VulnDBHQ::PrivatePage for the account
+
+    # @see http://support.securityroots.com/vulndbhq_api_v2.html#model-private-page
     # @authentication_required Yes
     # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-    # @return [VulnDBHQ::User] The authenticated user.
+    # @return [Array<VulnDBHQ::PrivatePage>] PrivatePages in the account associated with this user.
     # @param options [Hash] A customizable set of options.
-    # @example Return the requesting user if authentication was successful
-    # VulnDBHQ.verify_credentials
-    def verify_credentials(options={})
-      response = get("/api/account/verify_credentials.json", options)
-      VulnDBHQ::User.from_response(response)
+    # @option options [nil] no options are supported yet.
+    # @example Return the private pages for the account
+    # VulnDBHQ.private_pages
+    def private_pages(options={})
+      # response = get("/api/private_pages", options)
+      # collection_from_array(response[:body], VulnDBHQ::PrivatePage)
     end
-    alias current_user verify_credentials
   end
 end
