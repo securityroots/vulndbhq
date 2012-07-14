@@ -19,6 +19,19 @@ module VulnDBHQ
       }
     end
 
+    # @note Faraday's middleware stack implementation is comparable to that of Rack middleware. The order of middleware is important: the first middleware on the list wraps all others, while the last middleware is the innermost one.
+    # @see https://github.com/technoweenie/faraday#advanced-middleware-usage
+    # @see http://mislav.uniqpath.com/2011/07/faraday-advanced-http/
+    def self.middleware
+      @middleware ||= Faraday::Builder.new(
+        &Proc.new do |builder|
+          builder.use Faraday::Request::UrlEncoded # Convert request params as "www-form-urlencoded"
+          builder.use VulnDBHQ::Response::ParseJson # Parse JSON response bodies using MultiJson
+          builder.adapter Faraday.default_adapter # Set Faraday's HTTP adapter
+        end
+      )
+    end
+
     # The VulnDB HQ host
     def self.host
       ENV['VULNDBHQ_HOST']

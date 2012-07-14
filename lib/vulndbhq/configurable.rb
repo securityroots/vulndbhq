@@ -12,6 +12,7 @@ module VulnDBHQ
     CONFIG_KEYS = [
       :connection_options,
       :host,
+      :middleware
     ]
     attr_accessor *CONFIG_KEYS
 
