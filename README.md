@@ -12,6 +12,8 @@ DANGER, WILL ROBINSON!
 DANGER, WILL ROBINSON!
 THIS GEM IS IN EARLY BETA STAGE. EVERYTHING CAN CHANGE AT ANY POINT!!
 
+THIS GEM USES API v2 WHICH WILL BE AVAILABLE SOON
+
 Add this line to your application's Gemfile:
 
     gem 'vulndbhq'
@@ -29,7 +31,14 @@ Or install it yourself as:
 
 To provide your access credentials:
 
+```ruby
+require 'vulndbhq'
 
+client = VulnDBHQ::client
+client.host = 'https://you.vulndbhq.com'
+client.user = 'your@email.com'
+client.password = 'password'
+```
 
 ## Usage examples
 
@@ -37,6 +46,14 @@ Return the first PrivatePage:
 
     VulnDBHQ.private_pages
 
+Get a PrivatePage by id:
+
+```ruby
+private_page = client.private_page(1)
+
+puts private_page.name
+puts private_page.content
+```
 
 ## Contributing
 
