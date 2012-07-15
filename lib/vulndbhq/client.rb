@@ -1,6 +1,7 @@
 require 'faraday'
 require 'multi_json'
 
+require 'vulndbhq/base'
 require 'vulndbhq/configurable'
 require 'vulndbhq/default'
 require 'vulndbhq/private_page'
@@ -25,8 +26,24 @@ module VulnDBHQ
       end
     end
 
-    # Returns the collection of VulnDBHQ::PrivatePage for the account
+    # Returns a private page
+    #
+    # @see http://support.securityroots.com/vulndbhq_api_v2.html#model-private-page
 
+    # @authentication_required Yes
+    # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+    # @return [VulnDBHQ::PrivatePage] The requested messages.
+    # @param id [Integer] A VulnDB HQ private page ID.
+    # @param options [Hash] A customizable set of options.
+    # @example Return the private page with the id 87
+    # VulnDBHQ.private_page(87)
+    def private_page(id, options={})
+      response = get("/api/private_pages/#{id}", options)
+      VulnDBHQ::PrivatePage.from_response(response)
+    end
+
+    # Returns the collection of VulnDBHQ::PrivatePage for the account
+    #
     # @see http://support.securityroots.com/vulndbhq_api_v2.html#model-private-page
     # @authentication_required Yes
     # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
@@ -37,7 +54,7 @@ module VulnDBHQ
     # VulnDBHQ.private_pages
     def private_pages(options={})
       response = get("/api/private_pages", options)
-      collection_from_array(response[:body], VulnDBHQ::PrivatePage)
+      # collection_from_array(response[:body], VulnDBHQ::PrivatePage)
     end
 
     # Perform an HTTP GET request
