@@ -1,6 +1,10 @@
 require 'vulndbhq/identity_map'
 
 module VulnDBHQ
+
+  # Provides some common facilities for all VulnDBHQ objects including the
+  # ability to store attributes and to use an identity map to prevent
+  # re-loading the same object multiple times.
   class Base
     attr_reader :attrs
     alias to_hash attrs
