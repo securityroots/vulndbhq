@@ -6,7 +6,11 @@ module VulnDBHQ
     include VulnDBHQ::Configurable
 
     def client
-      VulnDBHQ::Client.new(options)
+      if @client && @client.cache_key == options.hash
+        @client
+      else
+        @client = VulnDBHQ::Client.new(options)
+      end
     end
 
     # Delegate to a VulnDBHQ::Client

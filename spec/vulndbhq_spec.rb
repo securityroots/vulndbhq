@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe VulnDBHQ do
+  after do
+    VulnDBHQ.reset!
+  end
 
   describe '.respond_to?' do
     it "delegates to VulnDBHQ::Client" do
@@ -15,6 +18,21 @@ describe VulnDBHQ do
     it "returns a VulnDBHQ::Client" do
       VulnDBHQ.client.should be_a VulnDBHQ::Client
     end
+    context "when the options don't change" do
+      it "caches the client" do
+        VulnDBHQ.client.should eq VulnDBHQ.client
+      end
+    end
+    context "when the options change" do
+      it "busts the cache" do
+        client1 = VulnDBHQ.client
+        VulnDBHQ.configure do |config|
+          config.host = TEST_ENDPOINT
+        end
+        client2 = VulnDBHQ.client
+        client1.should_not eq client2
+      end
+    end
   end
 
   describe ".configure" do
@@ -23,7 +41,7 @@ describe VulnDBHQ do
         VulnDBHQ.configure do |config|
           config.send("#{key}=", key)
         end
-        VulnDBHQ.instance_variable_get("@#{key}").should eq key
+        VulnDBHQ.instance_variable_get(:"@#{key}").should eq key
       end
     end
   end
