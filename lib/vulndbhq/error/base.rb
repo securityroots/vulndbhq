@@ -1,0 +1,36 @@
+module VulnDBHQ
+  module Error
+
+    # Custom error class for rescuing from all VulnDBHQ errors
+    class Base < StandardError
+
+      attr_reader :wrapped_exception
+
+      def self.errors
+        @errors ||= Hash[descendants.map{|klass| [klass.const_get(:HTTP_STATUS_CODE), klass]}]
+      end
+
+      def self.descendants
+        ObjectSpace.each_object(::Class).select{|klass| klass < self}
+      end
+
+      # Initializes a new Error object
+      #
+      # @param exception [Exception, String]
+      # @return [VulnDBHQ::Error]
+      def initialize(exception=$!)
+        if exception.respond_to?(:backtrace)
+          super(exception.message)
+          @wrapped_exception = exception
+        else
+          super(exception.to_s)
+        end
+      end
+
+      def backtrace
+        @wrapped_exception ? @wrapped_exception.backtrace : super
+      end
+    end
+
+  end
+end

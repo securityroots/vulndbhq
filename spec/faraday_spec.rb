@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe 'Faraday response' do
 
   context "for valid object" do
@@ -16,10 +18,5 @@ describe 'Faraday response' do
       response.body.keys.should include(:b)
       response.body[:b].should eq('dos')
     end
-  end
-
-  context "for invalid object" do
-    let(:client) { VulnDBHQ::Client.new }
-    pending "handles 404 responses"
   end
 end

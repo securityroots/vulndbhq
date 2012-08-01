@@ -26,6 +26,7 @@ module VulnDBHQ
       @middleware ||= Faraday::Builder.new(
         &Proc.new do |builder|
           builder.use Faraday::Request::UrlEncoded # Convert request params as "www-form-urlencoded"
+          builder.use VulnDBHQ::Response::RaiseClientError # Handle 4xx server responses
           builder.use VulnDBHQ::Response::ParseJson # Parse JSON response bodies using MultiJson
           builder.adapter Faraday.default_adapter # Set Faraday's HTTP adapter
         end
