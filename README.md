@@ -62,3 +62,18 @@ puts private_page.content
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
+## Copyright
+
+Copyright (c) 2012 Daniel Martin, Security Roots Ltd.
+See [LICENSE][license] for details.
+
+[license]: https://github.com/securityroots/vulndbhq/blob/master/LICENSE
+
+## Acknowledgements
+
+This gem uses the [Faraday][faraday] gem for the HTTP layer and is inspired by the [Twitter][twitter] gem architecture.
+
+[faraday]: http://rubygems.org/gems/faraday
+[twitter]: http://rubygems.org/gems/twitter
