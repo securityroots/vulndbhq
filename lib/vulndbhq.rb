@@ -14,21 +14,11 @@ module VulnDBHQ
       self.client.respond_to?(method, include_private) || super
     end
 
-    def options
-      @options = {}
-      VulnDBHQ::Configurable.keys.each do |key|
-        @options[key] = instance_variable_get("@#{key}")
-      end
-      @options
+    private
+    def method_missing(method, *args, &block)
+      return super unless self.client.respond_to?(method)
+      self.client.send(method, *args, &block)
     end
-
-    def reset!
-      VulnDBHQ::Configurable.keys.each do |key|
-        instance_variable_set("@#{key}", VulnDBHQ::Default.options[key])
-      end
-      self
-    end
-    alias setup reset!
 
   end
 end
