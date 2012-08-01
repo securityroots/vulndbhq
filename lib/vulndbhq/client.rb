@@ -4,8 +4,10 @@ require 'multi_json'
 require 'vulndbhq/base'
 require 'vulndbhq/configurable'
 require 'vulndbhq/default'
+require 'vulndbhq/error'
 require 'vulndbhq/private_page'
 require 'vulndbhq/response/parse_json'
+require 'vulndbhq/response/raise_client_error'
 require 'vulndbhq/version'
 
 module VulnDBHQ
@@ -22,7 +24,7 @@ module VulnDBHQ
     # @return [VulnDBHQ::Client]
     def initialize(options={})
       VulnDBHQ::Configurable.keys.each do |key|
-        instance_variable_set("@#{key}", options[key] || VulnDBHQ.options[key])
+        instance_variable_set(:"@#{key}", options[key] || VulnDBHQ.instance_variable_get(:"@#{key}"))
       end
     end
 
