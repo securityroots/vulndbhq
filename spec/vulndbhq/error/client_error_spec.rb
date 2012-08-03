@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe VulnDBHQ::Error::ClientError do
   before do
-    @client = VulnDBHQ::Client.new(host: TEST_ENDPOINT)
+    @client = VulnDBHQ::Client.new(:host => TEST_ENDPOINT)
   end
 
   VulnDBHQ::Error::ClientError.errors.each do |status, exception|
