@@ -8,9 +8,10 @@ This gem provides a Ruby wrapper to the VulnDB HQ API (http://vulndbhq.com).
 ## Installation
 
 DANGER, WILL ROBINSON!
+
 DANGER, WILL ROBINSON!
+
 DANGER, WILL ROBINSON!
-THIS GEM IS IN EARLY BETA STAGE. EVERYTHING CAN CHANGE AT ANY POINT!!
 
 THIS GEM USES API v2 WHICH WILL BE AVAILABLE SOON
 
@@ -40,11 +41,21 @@ client.user = 'your@email.com'
 client.password = 'password'
 ```
 
+Or provide configuration in line:
+
+```ruby
+client = VulnDBHQ::Client.new(host: 'https://your.vulndbhq.com', user: 'your@email.com', password: 'password')
+```
+
 ## Usage examples
 
-Return the first PrivatePage:
+Return the all PrivatePage:
 
-    VulnDBHQ.private_pages
+    client.private_pages
+
+Return private pages containing `XSS`
+
+    client.private_pages(q: 'XSS')
 
 Get a PrivatePage by id:
 
@@ -54,6 +65,10 @@ private_page = client.private_page(1)
 puts private_page.name
 puts private_page.content
 ```
+
+See the [VulnDB HQ API docs][api] for the full list of available methods.
+
+[api]: http://support.securityroots.com/vulndbhq_api_v2.html
 
 ## Contributing
 
