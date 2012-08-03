@@ -56,7 +56,7 @@ module VulnDBHQ
     # VulnDBHQ.private_pages
     def private_pages(options={})
       response = get("/api/private_pages", options)
-      # collection_from_array(response[:body], VulnDBHQ::PrivatePage)
+      collection_from_array(response[:body], VulnDBHQ::PrivatePage)
     end
 
     # Perform an HTTP GET request

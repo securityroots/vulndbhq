@@ -7,8 +7,7 @@ describe VulnDBHQ::PrivatePage do
     to_return(:status => 200,
       :body => "{\"content\":\"#[Title]#\\r\\nThis is my Private Page\\r\\n\\r\\n\",\"id\":1,\"name\":\"MyPrivatePage\"}",
       :headers => {'Content-Type' => 'application/json; charset=utf-8'})
-    client = VulnDBHQ::client
-    client.host = TEST_ENDPOINT
+    client = VulnDBHQ::Client.new(host: TEST_ENDPOINT)
 
     private_page = client.private_page(1)
     private_page.should be
@@ -17,4 +16,17 @@ describe VulnDBHQ::PrivatePage do
     private_page.content.should eq("#[Title]#\r\nThis is my Private Page\r\n\r\n")
   end
 
+  it "loads a collection of PrivatePages" do
+    stub_get('/api/private_pages').
+    to_return(:status => 200,
+      :body => "[{\"content\":\"#[Title]#\\r\\nThis is my Private Page\\r\\n\\r\\n\",\"id\":1,\"name\":\"MyPrivatePage1\"}," +
+                  "{\"content\":\"#[Title]#\\r\\nThis is another Private Page\\r\\n\\r\\n\",\"id\":2,\"name\":\"MyPrivatePage2\"}]",
+      :headers => {'Content-Type' => 'application/json; charset=utf-8'})
+    client = VulnDBHQ::Client.new(host: TEST_ENDPOINT)
+
+    collection = client.private_pages
+    collection.should be
+    collection.length.should eq(2)
+    collection.last.name.should eq('MyPrivatePage2')
+  end
 end
