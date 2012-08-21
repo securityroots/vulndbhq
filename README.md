@@ -7,14 +7,6 @@ This gem provides a Ruby wrapper to the VulnDB HQ API (http://vulndbhq.com).
 
 ## Installation
 
-DANGER, WILL ROBINSON!
-
-DANGER, WILL ROBINSON!
-
-DANGER, WILL ROBINSON!
-
-THIS GEM USES API v2 WHICH WILL BE AVAILABLE SOON
-
 Add this line to your application's Gemfile:
 
     gem 'vulndbhq'
