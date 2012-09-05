@@ -6,6 +6,7 @@ require 'vulndbhq/configurable'
 require 'vulndbhq/default'
 require 'vulndbhq/error'
 require 'vulndbhq/private_page'
+require 'vulndbhq/public_page'
 require 'vulndbhq/response/parse_json'
 require 'vulndbhq/response/raise_client_error'
 require 'vulndbhq/version'
@@ -27,6 +28,9 @@ module VulnDBHQ
         instance_variable_set(:"@#{key}", options[key] || VulnDBHQ.instance_variable_get(:"@#{key}"))
       end
     end
+
+
+    # ************************************************************* PrivatePage
 
     # Returns a private page
     #
@@ -58,6 +62,43 @@ module VulnDBHQ
       response = get("/api/private_pages", options)
       collection_from_array(response[:body], VulnDBHQ::PrivatePage)
     end
+
+
+    # ************************************************************** PublicPage
+
+    # Returns a public page
+    #
+    # @see http://support.securityroots.com/vulndbhq_api_v2.html#model-public-page
+
+    # @authentication_required Yes
+    # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+    # @return [VulnDBHQ::PublicPage] The requested messages.
+    # @param id [Integer] A VulnDB HQ private page ID.
+    # @param options [Hash] A customizable set of options.
+    # @example Return the public page with the id 87
+    # VulnDBHQ.public_page(87)
+    def public_page(id, options={})
+      response = get("/api/public_pages/#{id}", options)
+      VulnDBHQ::PublicPage.from_response(response)
+    end
+
+    # Returns the collection of VulnDBHQ::PublicPage available at the moment
+    #
+    # @see http://support.securityroots.com/vulndbhq_api_v2.html#model-public-page
+    # @authentication_required Yes
+    # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+    # @return [Array<VulnDBHQ::PublicPage>] PrivatePages in the account associated with this user.
+    # @param options [Hash] A customizable set of options.
+    # @option options [nil] no options are supported yet.
+    # @example Return the public pages available in the system
+    # VulnDBHQ.public_pages
+    def public_pages(options={})
+      response = get("/api/public_pages", options)
+      collection_from_array(response[:body], VulnDBHQ::PublicPage)
+    end
+
+
+    # ********************************************************* Support methods
 
     # Perform an HTTP GET request
     def get(path, params={}, options={})

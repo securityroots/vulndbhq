@@ -58,6 +58,11 @@ puts private_page.name
 puts private_page.content
 ```
 
+Return all the PublicPages:
+
+    client.public_pages
+
+
 See the [VulnDB HQ API docs][api] for the full list of available methods.
 
 [api]: http://support.securityroots.com/vulndbhq_api_v2.html
