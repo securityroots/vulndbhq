@@ -2,6 +2,8 @@ language: ruby
 matrix:
   allow_failures:
     - rvm: ruby-head
+    # There is a problem in fraday 0.8 with jruby + ssl
+    - rvm: jruby-19mode
 rvm:
   - jruby-18mode
   - jruby-19mode
