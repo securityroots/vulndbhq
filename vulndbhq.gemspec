@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
 
   # gem.add_runtime_dependency 'faraday', '~> 0.8'
   # see https://github.com/technoweenie/faraday/commit/b0d9a144596e96861a18d68f2418b7d74e7b791d
-  gem.add_runtime_dependency 'faraday', '0.9.0.pre'
+  gem.add_runtime_dependency 'faraday', '~> 0.8'
   gem.add_runtime_dependency 'multi_json', '~> 1.3'
 
   gem.add_development_dependency 'rake', '~> 0.8'
