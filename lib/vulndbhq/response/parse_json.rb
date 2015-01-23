@@ -17,7 +17,10 @@ module VulnDBHQ
 
       def on_complete(env)
         if respond_to?(:parse)
-          env[:body] = parse(env[:body]) unless [204, 304].include?(env[:status])
+	    # only call the parse routine if the response is json
+            if env[:response_headers].has_key?("content-type") && env[:response_headers]["content-type"].include?("json")
+		env[:body] = parse(env[:body]) unless [204, 304, 404].include?(env[:status])
+            end
         end
       end
 

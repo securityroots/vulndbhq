@@ -97,8 +97,73 @@ module VulnDBHQ
       collection_from_array(response[:body], VulnDBHQ::PublicPage)
     end
 
+    # Returns an empty hash on success and a hash with :errors on failure
+    #
+    # @see http://vulndbhq.com/help/api/v2/
+    # @authentication_required Yes
+    # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+    # @return an empty hash on success and a hash with :errors on failure
+    # @id The id to be updated 
+    # @content A string to populate the entry
+    def private_page_update(id,content)
+        params = JSON.generate({:private_page => {:content => "#{content}" }})
+        path = "/api/private_pages/#{id}"
+        return page_update(path,params,options)
+    end
+
+    # Returns a hash with the :id and :location of the new entry, or :errors
+    #
+    # @see http://vulndbhq.com/help/api/v2/
+    # @authentication_required Yes
+    # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+    # @return an a hash with :id and :location on success and a hash with :errors on failure
+    # @content A string to populate the entry
+    def private_page_create(name,content)
+        params = JSON.generate({:private_page => {:content => "#{content}",:name => "#{name}" }})
+        path = "/api/private_pages"
+        return page_create(path,params)
+    end
 
     # ********************************************************* Support methods
+
+    # Performs an update of an existing entry
+    # @authentication_required Yes
+    # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+    # @return an empty hash on success and a hash with :errors on failure
+    # @path The path to the resource (minus the site)
+    # @params The json data blob to write to the page
+    def page_update(path,params,options={})
+        rethash = {}
+        begin
+            request(:put, path, params, options)
+        rescue VulnDBHQ::Error::NotFound
+            rethash[:errors] = "#{path} was not found"
+        end
+
+        return rethash
+    end
+
+    # Creates a new page 
+    # Returns a hash with the :id and :location of the new entry, or :errors
+    #
+    # @see http://vulndbhq.com/help/api/v2/
+    # @authentication_required Yes
+    # @raise [VulnDBHQ::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+    # @return an a hash with :id and :location on success and a hash with :errors on failure
+    # @params a json blob to write to the page
+    def page_create(path, params,options={})
+        ret = request(:post, path, params, options)
+
+        rethash = {}
+        if ret[:status] >= 300
+            rethash[:errors] = ret[:body][:errors]
+        else
+            rethash[:id]=ret[:body][:id]
+            rethash[:location]=ret[:response_headers][:location]
+        end
+
+        return rethash
+    end
 
     # Perform an HTTP GET request
     def get(path, params={}, options={})
@@ -149,6 +214,7 @@ module VulnDBHQ
         unless params.empty?
           case request.method
           when :post, :put
+            request.headers['Content-Type'] = 'application/json'
             request.body = params
           else
             request.params.update(params)
