@@ -16,8 +16,8 @@ module VulnDBHQ
       def self.parse_error(body)
         if body.nil?
           ''
-        elsif body[:message]
-          body[:message]
+        else 
+          body
         end
       end
 
